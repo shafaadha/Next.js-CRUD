@@ -16,7 +16,7 @@ export default function CreateForm() {
     body: "",
   });
 
-  const handleSubmit = async (e) => {
+  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
 
     let newErrors = { name: "", email: "", body: "" };
