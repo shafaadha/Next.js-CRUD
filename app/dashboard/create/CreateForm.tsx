@@ -33,7 +33,7 @@ export default function CreateForm() {
 
     const saved = JSON.parse(localStorage.getItem("newComments") || "[]");
 
-    const lastId = parseInt(localStorage.getItem("lastCommentId")) || 500; // Mulai > ID API jika API max ID 500
+    const lastId = parseInt(localStorage.getItem("lastCommentId") ?? "500");
     const newId = lastId + 1;
 
     const newComment = { id: newId, name, email, body };
