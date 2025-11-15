@@ -14,7 +14,7 @@ export default function LoginForm() {
     password: "",
   });
 
-  const handleLogin = async (e) => {
+  const handleLogin = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     setIsLoading(true);
 
@@ -34,8 +34,6 @@ export default function LoginForm() {
       });
 
       setIsLoading(false)
-
-      const data = await res.json();
 
       if (res.ok) {
         router.push("/dashboard");
