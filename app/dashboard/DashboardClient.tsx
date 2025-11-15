@@ -5,30 +5,34 @@ import { DataTable } from "primereact/datatable";
 import { Column } from "primereact/column";
 import { useRouter } from "next/navigation";
 
-export default function DashboardClient({ apiData }) {
-  const [comments, setComments] = useState([]);
+type Comment = {
+  id: number;
+  name: string;
+  email: string;
+  body: string;
+};
+
+export default function DashboardClient({ apiData }: { apiData: Comment[] }) {
+  const [comments, setComments] = useState<Comment[]>([]);
   const [filter, setFilter] = useState("");
   const router = useRouter();
 
   useEffect(() => {
-    const saved = JSON.parse(localStorage.getItem("newComments") || "[]");
+    const saved: Comment[] = JSON.parse(localStorage.getItem("newComments") || "[]");
     setComments([...saved, ...apiData]);
   }, [apiData]);
 
-  // Filter data
   const filteredData = comments.filter((c) =>
     c.name.toLowerCase().includes(filter.toLowerCase())
   );
 
-  // Delete comment
-  const handleDelete = (id) => {
+  const handleDelete = (id: number) => {
     if (!confirm("Yakin ingin menghapus?")) return;
 
     const updated = comments.filter((c) => c.id !== id);
     setComments(updated);
 
-    // Hapus dari localStorage
-    const saved = JSON.parse(localStorage.getItem("newComments") || "[]");
+    const saved: Comment[] = JSON.parse(localStorage.getItem("newComments") || "[]");
     const newSaved = saved.filter((c) => c.id !== id);
     localStorage.setItem("newComments", JSON.stringify(newSaved));
   };
@@ -76,23 +80,13 @@ export default function DashboardClient({ apiData }) {
         tableStyle={{ minWidth: "50rem" }}
         className="shadow rounded-lg"
       >
-        <Column
-          field="id"
-          header="ID"
-          style={{ width: "50px" }}
-          headerStyle={{ padding: "0.5rem" }}
-          bodyStyle={{ padding: "0.5rem" }}
-        />
-        <Column field="name" header="Name" bodyStyle={{ padding: "0.5rem" }} />
+        <Column field="id" header="ID" style={{ width: "50px" }} />
+        <Column field="name" header="Name" />
         <Column field="email" header="Email" />
-        <Column
-          field="body"
-          header="Comment"
-          bodyStyle={{ padding: "0.5rem" }}
-        />
+        <Column field="body" header="Comment" />
         <Column
           header="Action"
-          body={(row) => (
+          body={(row: Comment) => (
             <button
               className="bg-red-500 text-white px-3 py-1 rounded"
               onClick={() => handleDelete(row.id)}
