@@ -18,7 +18,9 @@ export default function DashboardClient({ apiData }: { apiData: Comment[] }) {
   const router = useRouter();
 
   useEffect(() => {
-    const saved: Comment[] = JSON.parse(localStorage.getItem("newComments") || "[]");
+    const saved: Comment[] = JSON.parse(
+      localStorage.getItem("newComments") || "[]"
+    );
     setComments([...saved, ...apiData]);
   }, [apiData]);
 
@@ -32,7 +34,9 @@ export default function DashboardClient({ apiData }: { apiData: Comment[] }) {
     const updated = comments.filter((c) => c.id !== id);
     setComments(updated);
 
-    const saved: Comment[] = JSON.parse(localStorage.getItem("newComments") || "[]");
+    const saved: Comment[] = JSON.parse(
+      localStorage.getItem("newComments") || "[]"
+    );
     const newSaved = saved.filter((c) => c.id !== id);
     localStorage.setItem("newComments", JSON.stringify(newSaved));
   };
@@ -43,18 +47,18 @@ export default function DashboardClient({ apiData }: { apiData: Comment[] }) {
         <h1 className="text-2xl font-bold">Dashboard</h1>
         <div className="flex gap-3 flex-wrap justify-end">
           <button
+            className="bg-blue-600 text-white px-4 py-2 rounded w-full sm:w-auto"
+            onClick={() => router.push("/dashboard/create")}
+          >
+            Create Comment
+          </button>
+          <button
             className="bg-red-500 text-white px-4 py-2 rounded w-full sm:w-auto"
             onClick={() =>
               fetch("/api/logout").then(() => router.push("/login"))
             }
           >
             Logout
-          </button>
-          <button
-            className="bg-blue-600 text-white px-4 py-2 rounded w-full sm:w-auto"
-            onClick={() => router.push("/dashboard/create")}
-          >
-            Create Comment
           </button>
         </div>
       </div>
